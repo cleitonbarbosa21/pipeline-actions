@@ -23,7 +23,7 @@ jobs:
         runs-on: ubuntu-latest
         services:
             postgre:
-              image: postgre:latest
+              image: postgres:latest
               ports:
                   - 5432:5432
               env:
@@ -37,7 +37,7 @@ jobs:
                 uses: actions/setup-dotnet@v4
                 with:
                   dotnet-version: "8.0.300"
-                  
+
               - name: Execução de Teste de Integração
                 working-directory: ./src
                 run: dotnet test ./Review-Filmes.Test.Integration/Review-Filmes.Test.Integration.csproj

@@ -21,6 +21,9 @@ jobs:
       - name: Execução do comando build
         working-directory: ./src
         run: dotnet build Review-Filmes.sln
+  testes:
+    needs: [build]
+    uses: cleitonbarbosa21/pipeline-actions/.github/workflows/testes.yml@main
 
   release:
     name: Criação de Release

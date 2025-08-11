@@ -28,7 +28,7 @@ jobs:
   release:
     name: Criação de Release
     runs-on: ubuntu-latest
-    needs: [build]
+    needs: [testes]
     steps:
       - name: Obtendo o códio do projeto
         uses: actions/checkout@v4

@@ -47,5 +47,3 @@ jobs:
           tags: |
             cleitonbarbosa21/projeto-devops:latest
             cleitonbarbosa21/projeto-devops:v${{ github.run_number }}
-
-

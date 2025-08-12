@@ -50,6 +50,7 @@ jobs:
             - name: Setupe JDK
               uses: actions/setup-java@v4
               with:
+                distribution: adopt
                 java-version: '21'
 
             - name: Setup dotnet

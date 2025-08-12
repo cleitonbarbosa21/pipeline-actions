@@ -47,11 +47,13 @@ jobs:
         name: Scan com o Sonarqube
         runs-on: ubuntu-latest
         steps:
-            - name: Setupe JDK
+            - name: Obtendo o código do projeto
+              uses: actions/checkout@v4
+            - name: Setup JDK
               uses: actions/setup-java@v4
               with:
                 distribution: adopt
-                java-version: '11'
+                java-version: '21'
 
             - name: Setup dotnet
               uses: actions/setup-dotnet@v4

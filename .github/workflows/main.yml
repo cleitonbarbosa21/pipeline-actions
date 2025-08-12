@@ -24,6 +24,7 @@ jobs:
   testes:
     needs: [build]
     uses: cleitonbarbosa21/pipeline-actions/.github/workflows/testes.yml@main
+    secrets: inherit
 
   release:
     name: Criação de Release

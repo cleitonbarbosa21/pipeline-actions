@@ -66,10 +66,9 @@ No repositório, acesse **Settings > Secrets and variables > Actions** e adicion
 
 ---
 
-## 📄 Workflow (`.github/workflows/ci-cd.yml`)
+## 📄 Workflow (`.github/workflows/testes.yml`)
 
 ```yaml
-
 
 testes.yml
 
@@ -158,7 +157,8 @@ jobs:
               run: echo "O status do quality gate é ${{ steps.sonarqube-quality-gate-check.outputs.quality-gate-status }}"
 
 
-main.yaml
+## 📄 Workflow (`.github/workflows/main.yml`)
+```yaml
 
 name: Pipeline CI/CD
 run-name: Pipeline CI/CD executada por ${{ github.actor }} em {{ github.run_number }}
@@ -241,7 +241,8 @@ jobs:
     uses: cleitonbarbosa21/pipeline-actions/.github/workflows/deploy.yml@main
     secrets: inherit
 
-
+## 📄 Workflow (`.github/workflows/deploy.yml`)
+```yaml
 
 deploy.yml
 name: Deploy no Kubernetes

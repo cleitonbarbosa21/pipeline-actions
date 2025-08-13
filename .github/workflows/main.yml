@@ -33,11 +33,17 @@ jobs:
     steps:
       - name: Obtendo o códio do projeto
         uses: actions/checkout@v4
+      - name: Analise do Dockerfile
+        uses: hadolint/hadolint-action@3.1.0
+        with:
+          dockerfile: ./src/Review-Filmes.Web/Dockerfile
+
       - name: Efetuando o Login no Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_PWD }}
+
       - name: Build e Push da Imagem Docker
         uses: docker/build-push-action@v6
         with:
@@ -47,3 +53,18 @@ jobs:
           tags: |
             cleitonbarbosa21/projeto-devops:latest
             cleitonbarbosa21/projeto-devops:v${{ github.run_number }}
+
+      - name: Executar o Trivy
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: 'image'
+          image-ref: cleitonbarbosa21/projeto-devops:v${{ github.run_number }}
+          format: sarif
+          output: trivy-docker-result.sarif
+          severity: 'UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL'
+
+      - name: Upload do arquivo Trivy para o Github
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          category: docker-result
+          sarif_file: trivy-docker-result.sarif

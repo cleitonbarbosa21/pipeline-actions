@@ -98,29 +98,6 @@ O pipeline é executado automaticamente quando há **push** para a branch `main`
 
 ---
 
-
-## 🚀 Executando o pipeline
-
-O pipeline é executado automaticamente quando há **push** para a branch `main` ou manualmente via **workflow_dispatch**.
-
-### 1️⃣ Build e Testes
-- Compila o código.
-- Executa testes unitários e de integração.
-- Analisa a qualidade no SonarQube.
-
-### 2️⃣ Release
-- Verifica o Dockerfile com Hadolint.
-- Cria e envia imagem para o Docker Hub.
-- Executa scan de vulnerabilidades com Trivy.
-
-### 3️⃣ Deploy
-- Atualiza o deployment no Kubernetes.
-- Executa rolling update com zero downtime.
-
----
-
-
-
 📌 Boas práticas aplicadas
 - Quality Gate no SonarQube para impedir deploy de código com baixa qualidade.
 - Scan de segurança da imagem antes do deploy.

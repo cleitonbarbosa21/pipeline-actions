@@ -98,17 +98,6 @@ O pipeline é executado automaticamente quando há **push** para a branch `main`
 
 ---
 
-## 🐳 Deploy manual (opcional)
-
-Se quiser fazer manualmente:
-
-```bash
-kubectl --kubeconfig=kubeconfig apply -f k8s/deployment.yaml
-kubectl --kubeconfig=kubeconfig apply -f k8s/service.yaml
-
-
-
----
 
 ## 🚀 Executando o pipeline
 
@@ -130,13 +119,6 @@ O pipeline é executado automaticamente quando há **push** para a branch `main`
 
 ---
 
-## 🐳 Deploy manual (opcional)
-
-Se quiser fazer manualmente:
-
-```bash
-kubectl --kubeconfig=kubeconfig apply -f k8s/deployment.yaml
-kubectl --kubeconfig=kubeconfig apply -f k8s/service.yaml
 
 
 📌 Boas práticas aplicadas

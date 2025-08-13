@@ -140,7 +140,7 @@ kubectl --kubeconfig=kubeconfig apply -f k8s/service.yaml
 
 
 📌 Boas práticas aplicadas
-Quality Gate no SonarQube para impedir deploy de código com baixa qualidade.
-Scan de segurança da imagem antes do deploy.
-Rolling updates no Kubernetes para evitar downtime.
-Versionamento automático das imagens usando github.run_number.
+- Quality Gate no SonarQube para impedir deploy de código com baixa qualidade.
+- Scan de segurança da imagem antes do deploy.
+- Rolling updates no Kubernetes para evitar downtime.
+- Versionamento automático das imagens usando github.run_number.

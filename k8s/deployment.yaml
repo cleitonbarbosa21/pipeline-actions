@@ -53,7 +53,7 @@ spec:
     spec:
       containers:
         - name: reviewfilmes
-          image: fabricioveronez/rv-teste
+          image: cleitonbarbosa21/projeto-devops
           env:
           - name: ASPNETCORE_HTTP_PORTS
             value: "8080"

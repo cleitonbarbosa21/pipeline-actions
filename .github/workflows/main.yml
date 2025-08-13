@@ -72,3 +72,9 @@ jobs:
         with:
           category: docker-result
           sarif_file: trivy-docker-result.sarif
+
+
+  deploy-homolog:
+    needs: [release]
+    uses: cleitonbarbosa21/pipeline-actions/.github/workflows/deploy.yml@main
+    secrets: inherit

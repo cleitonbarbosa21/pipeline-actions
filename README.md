@@ -56,25 +56,24 @@ No repositório, vá em **Settings > Secrets and variables > Actions** e configu
 
 ---
 
-## 📂 Estrutura do projeto
-
+```text
+📂 Estrutura do Projeto
 .
-├── src/
-│ ├── Review-Filmes.Web/ # Aplicação principal
-│ ├── Review-Filmes.Test.Unit/ # Testes unitários
-│ ├── Review-Filmes.Test.Integration/ # Testes de integração
+├── src
+│ ├── Review-Filmes.Web # Aplicação principal
+│ ├── Review-Filmes.Test.Unit # Testes unitários
+│ ├── Review-Filmes.Test.Integration # Testes de integração
 │ ├── Review-Filmes.sln
 │ └── Dockerfile
-├── k8s/
+├── k8s
 │ ├── deployment.yaml # Manifesto de deploy Kubernetes
 │ └── service.yaml # Manifesto de serviço Kubernetes
-└── .github/
-└── workflows/
+└── .github
+└── workflows
 ├── main.yml # Pipeline CI/CD principal
 ├── testes.yml # Execução de testes e SonarQube
 └── deploy.yml # Deploy no Kubernetes
-
-
+```
 
 
 ---

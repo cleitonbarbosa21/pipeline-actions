@@ -1,15 +1,16 @@
-# 🚀 CI/CD com GitHub Actions + SonarQube + Docker Hub
+# 🚀 CI/CD com GitHub Actions + SonarQube + Kubernetes (DigitalOcean)
 
 ![GitHub Actions](https://img.shields.io/github/actions/workflow/status/usuario/repositorio/ci-cd.yml?branch=main&label=CI/CD)
 ![SonarQube Quality Gate](https://img.shields.io/badge/SonarQube-Quality%20Gate-blue)
-![Docker Hub](https://img.shields.io/badge/Docker%20Hub-Automated%20Build-blue)
+![Kubernetes](https://img.shields.io/badge/Kubernetes-DigitalOcean-blue)
 
-Este projeto utiliza **GitHub Actions** para implementar um pipeline completo de **Integração Contínua (CI)** e **Entrega Contínua (CD)**, incluindo:
+Este projeto implementa um **pipeline CI/CD** automatizado usando **GitHub Actions** para:
 
 - 📦 **Build** da aplicação
 - 🧪 **Testes automatizados**
 - 🔍 **Análise de qualidade** com SonarQube
-- 🐳 **Deploy da imagem** no Docker Hub
+- 🐳 **Build e push da imagem Docker**
+- ☸️ **Deploy no Kubernetes** na DigitalOcean
 
 ---
 
@@ -21,34 +22,47 @@ Este projeto utiliza **GitHub Actions** para implementar um pipeline completo de
    - Gera relatórios de cobertura.
 
 2. **Análise de qualidade**
-   - Usa **SonarQube** para avaliar código.
-   - Aplica **Quality Gates**.
+   - Integração com **SonarQube**.
+   - Aplica **Quality Gates** para evitar deploy de código ruim.
 
-3. **Build e Deploy no Docker Hub**
+3. **Build e push Docker**
    - Cria imagem Docker.
-   - Faz push da imagem para o repositório no Docker Hub.
+   - Publica no **DigitalOcean Container Registry (DOCR)** ou **Docker Hub**.
+
+4. **Deploy no Kubernetes**
+   - Aplica manifestos no **DigitalOcean Kubernetes (DOKS)**.
+   - Usa rolling updates para zero downtime.
 
 ---
 
 ## 🔑 Pré-requisitos
 
 - Conta no [GitHub](https://github.com)
-- Conta no [Docker Hub](https://hub.docker.com/)
-- Servidor **SonarQube** configurado (local ou remoto)
-- Docker instalado localmente para desenvolvimento
+- Conta no [DigitalOcean](https://www.digitalocean.com/)
+- **Cluster Kubernetes** criado no DigitalOcean
+- **DigitalOcean Container Registry** configurado
+- **SonarQube** instalado na AWS
+- Arquivos de manifesto Kubernetes (`deployment.yaml`, `service.yaml` etc.)
 
 ---
 
 ## ⚙️ Configuração de Secrets no GitHub
 
-No repositório, acesse **Settings > Secrets and variables > Actions** e crie:
+No repositório, acesse **Settings > Secrets and variables > Actions** e adicione:
 
-| Nome                | Descrição                                  |
-|---------------------|--------------------------------------------|
-| `DOCKERHUB_USERNAME`| Usuário do Docker Hub                      |
-| `DOCKERHUB_TOKEN`   | Token ou senha do Docker Hub                |
-| `SONAR_HOST_URL`    | URL do servidor SonarQube                   |
-| `SONAR_TOKEN`       | Token gerado no SonarQube                   |
+| Nome                  | Descrição                                                                 |
+|-----------------------|---------------------------------------------------------------------------|
+| `DOCKER_USERNAME`     | Usuário do DOCR ou Docker Hub                                             |
+| `DOCKER_PASSWORD`     | Token de acesso do DOCR ou senha do Docker Hub                            |
+| `SONAR_HOST_URL`      | URL do servidor SonarQube                                                 |
+| `SONAR_TOKEN`         | Token gerado no SonarQube                                                 |
+| `KUBE_CONFIG`         | Conteúdo do `kubeconfig` do cluster DOKS em Base64                        |
+
+> Para gerar o Base64 do kubeconfig do DigitalOcean:  
+> ```bash
+> doctl kubernetes cluster kubeconfig save <CLUSTER_NAME>
+> cat ~/.kube/config | base64 -w 0
+> ```
 
 ---
 
@@ -63,48 +77,19 @@ on:
   pull_request:
     branches: ["main"]
 
+permissions:
+  contents: read
+  security-events: write
+
 jobs:
-  build-test-sonar-docker:
+  build-test-sonar-docker-k8s:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout do código
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Configuração do Java (exemplo para Maven)
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           java-version: '17'
-          distribution: 'temurin'
-
-      # Build e Testes
-      - name: Build and Test
-        run: |
-          ./mvnw clean install
-          ./mvnw test
-
-      # Análise com SonarQube
-      - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v2
-        with:
-          args: >
-            -Dsonar.projectKey=meu-projeto
-            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-
-      # Login no Docker Hub
-      - name: Docker Login
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      # Build da imagem Docker
-      - name: Build Docker image
-        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/meu-app:latest .
-
-      # Push da imagem para o Docker Hub
-      - name: Push Docker image
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/meu-app:latest

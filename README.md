@@ -156,8 +156,10 @@ jobs:
               if: ${{ always() }}
               run: echo "O status do quality gate é ${{ steps.sonarqube-quality-gate-check.outputs.quality-gate-status }}"
 
+---
 
 ## 📄 Workflow (`.github/workflows/main.yml`)
+
 ```yaml
 
 name: Pipeline CI/CD
@@ -240,8 +242,11 @@ jobs:
     needs: [release]
     uses: cleitonbarbosa21/pipeline-actions/.github/workflows/deploy.yml@main
     secrets: inherit
+---
+
 
 ## 📄 Workflow (`.github/workflows/deploy.yml`)
+
 ```yaml
 
 deploy.yml

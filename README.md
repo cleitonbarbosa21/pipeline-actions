@@ -67,7 +67,7 @@ No repositório, vá em **Settings > Secrets and variables > Actions** e configu
 │ └── Dockerfile
 ├── k8s
 │ ├── deployment.yaml # Manifesto de deploy Kubernetes
-│ └── service.yaml # Manifesto de serviço Kubernetes
+│ 
 └── .github
 └── workflows
 ├── main.yml # Pipeline CI/CD principal
